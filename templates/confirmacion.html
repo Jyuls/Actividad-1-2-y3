@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Registro</title>
+    <style>
+        /* Mismo CSS que en registro.html para consistencia */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .confirmation-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+        .data-table th, .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .data-table th {
+            background-color: #f8f9fa;
+            color: #34495e;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn-confirm {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-edit {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <h1>Confirma tus datos</h1>
+        
+        {# Mostrar errores si existen #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <table class="data-table">
+            <tr>
+                <th>Campo</th>
+                <th>Valor</th>
+            </tr>
+            <tr>
+                <td>Nombre completo</td>
+                <td>{{ datos.nombre }} {{ datos.apellido_paterno }} {{ datos.apellido_materno if datos.apellido_materno }}</td>
+            </tr>
+            <tr>
+                <td>Fecha de nacimiento</td>
+                <td>{{ datos.fecha_nacimiento }}</td>
+            </tr>
+            <tr>
+                <td>CURP</td>
+                <td>{{ datos.curp }}</td>
+            </tr>
+            <tr>
+                <td>Celular</td>
+                <td>{{ datos.celular }}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ datos.email }}</td>
+            </tr>
+            <tr>
+                <td>Nivel de estudios</td>
+                <td>{{ datos.estudios }}</td>
+            </tr>
+        </table>
+
+        <div class="button-group">
+            <form method="POST" action="{{ url_for('confirmacion') }}">
+                <button type="submit" name="confirmar" class="btn btn-confirm">
+                    Confirmar y Guardar
+                </button>
+                <button type="submit" name="editar" class="btn btn-edit">
+                    Editar Datos
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
